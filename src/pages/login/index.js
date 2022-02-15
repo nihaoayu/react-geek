@@ -3,18 +3,17 @@ import './index.scss'
 import logo from '@/assets/logo.png'
 import { useDispatch } from 'react-redux'
 import { loginAction } from '@/store/actions/login'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 function Login () {
   const dispatch = useDispatch()
   const history = useHistory()
+  const location = useLocation()
   const onFinish = async (values) => {
-    console.log('Success:', values)
     try {
       await dispatch(loginAction(values))
       message.success('登录成功')
-      history.push('/home')
+      history.push(location.state?.form || '/home')
     } catch (error) {
-      console.dir(error.response.data.message)
       message.error(error.response.data.message)
     }
   }
