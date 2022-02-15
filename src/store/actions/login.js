@@ -1,8 +1,8 @@
 import { setToken } from '@/utils/auth'
-import axios from 'axios'
+import request from '@/utils/request'
 export function loginAction (values) {
   return async (dispatch) => {
-    const { data: { data: { token } } } = await axios.post('http://geek.itheima.net/v1_0/authorizations', values)
+    const { data: { token } } = await request.post('/authorizations', values)
     console.log(token)
     dispatch({
       type: 'login/token',
