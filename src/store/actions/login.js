@@ -1,3 +1,4 @@
+import { setToken } from '@/utils/auth'
 import axios from 'axios'
 export function loginAction (values) {
   return async (dispatch) => {
@@ -7,5 +8,6 @@ export function loginAction (values) {
       type: 'login/token',
       token
     })
+    setToken(token)
   }
 }
