@@ -1,16 +1,21 @@
-import { Card, Form, Input, Button, Checkbox } from 'antd'
+import { Card, Form, Input, Button, Checkbox, message } from 'antd'
 import './index.scss'
 import logo from '@/assets/logo.png'
 import { useDispatch } from 'react-redux'
 import { loginAction } from '@/store/actions/login'
+import { useHistory } from 'react-router-dom'
 function Login () {
   const dispatch = useDispatch()
+  const history = useHistory()
   const onFinish = async (values) => {
     console.log('Success:', values)
     try {
       await dispatch(loginAction(values))
+      message.success('登录成功')
+      history.push('/home')
     } catch (error) {
-      console.log(error)
+      console.dir(error.response.data.message)
+      message.error(error.response.data.message)
     }
   }
   return (
