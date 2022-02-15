@@ -1,18 +1,13 @@
-import { Button } from 'antd'
-import { PoweroffOutlined } from '@ant-design/icons'
+import { Card } from 'antd'
+import './index.scss'
+import logo from '@/assets/logo.png'
 function Login () {
   return (
-    <div>
-      <h1>Login</h1>
-      <div>
-        <Button
-          type="primary"
-          icon={<PoweroffOutlined />}
-          loading={false}
-        >
-          Click me!
-        </Button>
-      </div>
+    <div className="login">
+      <Card className="login-container">
+        <img className="login-logo" src={logo} alt="" />
+        {/* 登录表单 */}
+      </Card>
     </div>
   )
 }
