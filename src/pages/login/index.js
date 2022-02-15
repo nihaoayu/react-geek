@@ -1,9 +1,17 @@
 import { Card, Form, Input, Button, Checkbox } from 'antd'
 import './index.scss'
 import logo from '@/assets/logo.png'
+import { useDispatch } from 'react-redux'
+import { loginAction } from '@/store/actions/login'
 function Login () {
-  const onFinish = (values) => {
+  const dispatch = useDispatch()
+  const onFinish = async (values) => {
     console.log('Success:', values)
+    try {
+      await dispatch(loginAction(values))
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <div className="login">
