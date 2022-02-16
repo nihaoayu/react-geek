@@ -1,4 +1,4 @@
-import { Layout, Menu, Popconfirm } from 'antd'
+import { Layout, Menu, message, Popconfirm } from 'antd'
 import { LogoutOutlined, HomeOutlined, DiffOutlined, EditOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import Home from '../home/index'
@@ -22,7 +22,7 @@ function Layouts () {
   const logout = () => {
     dispatch(logoutAction())
     history.replace('/login')
-
+    message.error('退出登录成功')
   }
   return (
     <Layout className={styles.root}>

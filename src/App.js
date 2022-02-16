@@ -1,12 +1,13 @@
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { Router, Route, Switch, Redirect } from 'react-router-dom'
 import './App.scss'
 import Layout from './pages/layout'
 import Login from './pages/login'
 import NotFound from './pages/404'
 import AuthRoute from './components/auth'
+import history from './utils/history'
 function App () {
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <div className="app">
         <Switch>
           <Redirect exact from='/' to='/home' />
@@ -18,7 +19,7 @@ function App () {
           <Route component={NotFound} />
         </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
   )
 }
 
