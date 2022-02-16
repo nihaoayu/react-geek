@@ -7,7 +7,7 @@ import AuthRoute from './components/auth'
 function App () {
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="app">
         <Switch>
           <Redirect exact from='/' to='/home' />
           {/* <Route path='/home' component={Layout} /> */}
