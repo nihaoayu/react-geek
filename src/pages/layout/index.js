@@ -4,19 +4,26 @@ import styles from './index.module.scss'
 import Home from '../home/index'
 import Article from '../article/index'
 import Publish from '../publish/index'
-import { Route, Link, useLocation } from 'react-router-dom'
+import { Route, Link, useLocation, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getUserAction } from '@/store/actions/user'
+import { logoutAction } from '@/store/actions/login'
 const { Header, Sider } = Layout
 function Layouts () {
   const location = useLocation()
+  const history = useHistory()
   const selectedKey = location.pathname.startsWith('/home/publish') ? '/home/publish' : location.pathname
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUserAction())
   }, [dispatch])
   const user = useSelector(state => state.user)
+  const logout = () => {
+    dispatch(logoutAction())
+    history.replace('/login')
+
+  }
   return (
     <Layout className={styles.root}>
       <Header className="header">
@@ -25,7 +32,7 @@ function Layouts () {
         <div className="user-info">
           <span className="user-name">{user.name}</span>
           <span className="user-logout">
-            <Popconfirm title="是否确认退出？" okText="退出" cancelText="取消">
+            <Popconfirm title="是否确认退出？" onConfirm={logout} okText="退出" cancelText="取消">
               <LogoutOutlined /> 退出
             </Popconfirm>
           </span>

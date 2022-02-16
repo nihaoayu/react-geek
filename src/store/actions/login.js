@@ -1,4 +1,4 @@
-import { setToken } from '@/utils/auth'
+import { removeToken, setToken } from '@/utils/auth'
 import request from '@/utils/request'
 export function loginAction (values) {
   return async (dispatch) => {
@@ -9,5 +9,14 @@ export function loginAction (values) {
       token
     })
     setToken(token)
+  }
+}
+export const logoutAction = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'login/delToken'
+    })
+    removeToken()
+    dispatch({ type: 'user/del' })
   }
 }
