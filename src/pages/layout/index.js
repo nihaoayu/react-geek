@@ -1,9 +1,14 @@
 import { Layout, Menu, Popconfirm } from 'antd'
 import { LogoutOutlined, HomeOutlined, DiffOutlined, EditOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
-
+import Home from '../home/index'
+import Article from '../article/index'
+import Publish from '../publish/index'
+import { Route, Link, useLocation } from 'react-router-dom'
 const { Header, Sider } = Layout
 function Layouts () {
+  const location = useLocation()
+  const selectedKey = location.pathname.startsWith('/home/publish') ? '/home/publish' : location.pathname
   return (
     <Layout className={styles.root}>
       <Header className="header">
@@ -24,21 +29,25 @@ function Layouts () {
           <Menu
             mode="inline"
             theme="dark"
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={[selectedKey]}
             style={{ height: '100%', borderRight: 0 }}
           >
-            <Menu.Item icon={<HomeOutlined />} key="1">
-              数据概览
+            <Menu.Item icon={<HomeOutlined />} key="/home">
+              <Link to='/home'>数据概览</Link>
             </Menu.Item>
-            <Menu.Item icon={<DiffOutlined />} key="2">
-              内容管理
+            <Menu.Item icon={<DiffOutlined />} key="/home/article">
+              <Link to='/home/article'>内容管理</Link>
             </Menu.Item>
-            <Menu.Item icon={<EditOutlined />} key="3">
-              发布文章
+            <Menu.Item icon={<EditOutlined />} key="/home/publish">
+              <Link to='/home/publish'>发布文章</Link>
             </Menu.Item>
           </Menu>
         </Sider>
-        <Layout className="layout-content" style={{ padding: 20 }}>内容</Layout>
+        <Layout className="layout-content" style={{ padding: 20 }}>
+          <Route exact path='/home' component={Home} />
+          <Route path='/home/article' component={Article} />
+          <Route path='/home/publish/:id?' component={Publish} />
+        </Layout>
       </Layout>
     </Layout>
   )
