@@ -23,3 +23,9 @@ export const getArticleAction = (datas) => {
     dispatch({ type: 'article/get', params })
   }
 }
+export const delArticleAction = (id, params) => {
+  return async (dispatch) => {
+    await request.delete(`/mp/articles/${id}`)
+    dispatch(getArticleAction(params))
+  }
+}

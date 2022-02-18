@@ -10,11 +10,20 @@ import {
   Table,
   Tag,
   Space,
+  Modal,
 } from 'antd'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import {
+  EditOutlined,
+  DeleteOutlined,
+  WarningOutlined,
+} from '@ant-design/icons'
 import img404 from '@/assets/error.png'
 import { useEffect, useRef } from 'react'
-import { getChannelAction, getArticleAction } from '@/store/actions/article'
+import {
+  getChannelAction,
+  getArticleAction,
+  delArticleAction,
+} from '@/store/actions/article'
 import { useDispatch, useSelector } from 'react-redux'
 
 const { Option } = Select
@@ -60,6 +69,17 @@ const Article = () => {
       per_page: pageSize,
     }
     dispatch(getArticleAction(params))
+  }
+  // 删除功能
+  const delArticle = (data) => {
+    Modal.confirm({
+      title: '提示',
+      content: `确定删除${data.title} 这篇文章吗`,
+      icon: <WarningOutlined />,
+      onOk() {
+        dispatch(delArticleAction(data.id, paramsFilter.current))
+      },
+    })
   }
   const columns = [
     {
@@ -108,6 +128,7 @@ const Article = () => {
               danger
               shape="circle"
               icon={<DeleteOutlined />}
+              onClick={() => delArticle(data)}
             />
           </Space>
         )
