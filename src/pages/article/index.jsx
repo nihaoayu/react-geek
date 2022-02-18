@@ -11,8 +11,8 @@ import {
   Tag,
   Space,
 } from 'antd'
-import 'moment/locale/zh-cn'
-import locale from 'antd/es/date-picker/locale/zh_CN'
+// import 'moment/locale/zh-cn'
+
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
 import img404 from '@/assets/error.png'
@@ -166,7 +166,7 @@ const Article = () => {
           </Form.Item>
 
           <Form.Item label="日期" name="date">
-            <RangePicker locale={locale}></RangePicker>
+            <RangePicker></RangePicker>
           </Form.Item>
 
           <Form.Item>
