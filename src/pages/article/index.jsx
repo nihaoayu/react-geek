@@ -39,6 +39,18 @@ const Article = () => {
   }, [dispatch])
   // 频道列表
   const { channel, list, total } = useSelector((state) => state.article)
+  // 筛选
+  const onFilter = ({ channel_id, date, status }) => {
+    const params = { channel_id }
+    if (status !== -1) {
+      params.status = status
+    }
+    if (!!date) {
+      params.begin_pubdate = date[0].format('YYYY-MM-DD HH:mm:ss')
+      params.end_pubdate = date[1].format('YYYY-MM-DD HH:mm:ss')
+    }
+    dispatch(getArticleAction(params))
+  }
   const columns = [
     {
       title: '封面',
@@ -117,7 +129,7 @@ const Article = () => {
           </Breadcrumb>
         }
         style={{ marginBottom: 20 }}>
-        <Form initialValues={{ status: -1 }}>
+        <Form onFinish={onFilter} initialValues={{ status: -1 }}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
               <Radio value={-1}>全部</Radio>
@@ -136,7 +148,7 @@ const Article = () => {
               {/* <Option value="jack">Jack</Option>
               <Option value="lucy">Lucy</Option> */}
               {channel.map((item) => (
-                <Option value="item.id" key={item.id}>
+                <Option value={item.id} key={item.id}>
                   {item.name}
                 </Option>
               ))}
