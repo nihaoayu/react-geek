@@ -22,7 +22,13 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
-
+// 优化文章状态的处理
+const articleStatus = {
+  0: { color: 'yellow', text: '草稿' },
+  1: { color: '#ccc', text: '待审核' },
+  2: { color: 'green', text: '审核通过' },
+  3: { color: 'red', text: '审核失败' },
+}
 const Article = () => {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -49,7 +55,9 @@ const Article = () => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (data) => <Tag color="green">审核通过</Tag>,
+      render: (data) => (
+        <Tag color={articleStatus[data].color}>{articleStatus[data].text}</Tag>
+      ),
     },
     {
       title: '发布时间',
