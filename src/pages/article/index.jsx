@@ -11,12 +11,9 @@ import {
   Tag,
   Space,
 } from 'antd'
-// import 'moment/locale/zh-cn'
-
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-
 import img404 from '@/assets/error.png'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { getChannelAction, getArticleAction } from '@/store/actions/article'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -42,6 +39,7 @@ const Article = () => {
     (state) => state.article
   )
   // 筛选
+  const paramsFilter = useRef()
   const onFilter = ({ channel_id, date, status }) => {
     const params = { channel_id }
     if (status !== -1) {
@@ -51,11 +49,13 @@ const Article = () => {
       params.begin_pubdate = date[0].format('YYYY-MM-DD HH:mm:ss')
       params.end_pubdate = date[1].format('YYYY-MM-DD HH:mm:ss')
     }
+    paramsFilter.current = params
     dispatch(getArticleAction(params))
   }
   // 分页功能
   const pageChange = (page, pageSize) => {
     const params = {
+      ...paramsFilter.current,
       page,
       per_page: pageSize,
     }
