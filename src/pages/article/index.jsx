@@ -16,11 +16,20 @@ import locale from 'antd/es/date-picker/locale/zh_CN'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
 import img404 from '@/assets/error.png'
+import { useEffect } from 'react'
+import { getChannelAction } from '@/store/actions/article'
+import { useDispatch, useSelector } from 'react-redux'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
 
 const Article = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getChannelAction())
+  }, [dispatch])
+  // 频道列表
+  const { channel } = useSelector((state) => state.article)
   const columns = [
     {
       title: '封面',
@@ -113,8 +122,13 @@ const Article = () => {
               placeholder="请选择文章频道"
               // defaultValue="lucy"
               style={{ width: 120 }}>
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
+              {/* <Option value="jack">Jack</Option>
+              <Option value="lucy">Lucy</Option> */}
+              {channel.map((item) => (
+                <Option value="item.id" key={item.id}>
+                  {item.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
