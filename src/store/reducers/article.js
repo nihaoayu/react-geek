@@ -1,5 +1,6 @@
 const initialState = {
-  channel: []
+  channel: [],
+  list: []
 }
 
 export const reducerArticle = (state = initialState, action) => {
@@ -7,6 +8,12 @@ export const reducerArticle = (state = initialState, action) => {
     return {
       ...state,
       channel: action.list
+    }
+  }
+  if (action.type === 'article/get') {
+    return {
+      ...state,
+      ...action.params
     }
   }
   return state

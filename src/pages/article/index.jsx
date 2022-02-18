@@ -17,7 +17,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
 import img404 from '@/assets/error.png'
 import { useEffect } from 'react'
-import { getChannelAction } from '@/store/actions/article'
+import { getChannelAction, getArticleAction } from '@/store/actions/article'
 import { useDispatch, useSelector } from 'react-redux'
 
 const { Option } = Select
@@ -26,10 +26,13 @@ const { RangePicker } = DatePicker
 const Article = () => {
   const dispatch = useDispatch()
   useEffect(() => {
+    // 获取频道列表
     dispatch(getChannelAction())
+    // 获取table表格
+    dispatch(getArticleAction({}))
   }, [dispatch])
   // 频道列表
-  const { channel } = useSelector((state) => state.article)
+  const { channel, list, total } = useSelector((state) => state.article)
   const columns = [
     {
       title: '封面',
@@ -82,18 +85,18 @@ const Article = () => {
     },
   ]
 
-  const data = [
-    {
-      id: '8218',
-      comment_count: 0,
-      cover: 'http://geek.itheima.net/resources/images/15.jpg',
-      like_count: 0,
-      pubdate: '2019-03-11 09:00:00',
-      read_count: 2,
-      status: 2,
-      title: 'webview离线化加载h5资源解决方案',
-    },
-  ]
+  // const data = [
+  //   {
+  //     id: '8218',
+  //     comment_count: 0,
+  //     cover: 'http://geek.itheima.net/resources/images/15.jpg',
+  //     like_count: 0,
+  //     pubdate: '2019-03-11 09:00:00',
+  //     read_count: 2,
+  //     status: 2,
+  //     title: 'webview离线化加载h5资源解决方案',
+  //   },
+  // ]
   return (
     <>
       <Card
@@ -144,7 +147,8 @@ const Article = () => {
         </Form>
       </Card>
       <Card>
-        <Table columns={columns} dataSource={data} rowKey="id" />
+        <div>共计{total}篇文章</div>
+        <Table columns={columns} dataSource={list} rowKey="id" />
       </Card>
     </>
   )
