@@ -38,7 +38,9 @@ const Article = () => {
     dispatch(getArticleAction({}))
   }, [dispatch])
   // 频道列表
-  const { channel, list, total } = useSelector((state) => state.article)
+  const { channel, list, total, page, pageSize } = useSelector(
+    (state) => state.article
+  )
   // 筛选
   const onFilter = ({ channel_id, date, status }) => {
     const params = { channel_id }
@@ -48,6 +50,14 @@ const Article = () => {
     if (!!date) {
       params.begin_pubdate = date[0].format('YYYY-MM-DD HH:mm:ss')
       params.end_pubdate = date[1].format('YYYY-MM-DD HH:mm:ss')
+    }
+    dispatch(getArticleAction(params))
+  }
+  // 分页功能
+  const pageChange = (page, pageSize) => {
+    const params = {
+      page,
+      per_page: pageSize,
     }
     dispatch(getArticleAction(params))
   }
@@ -168,7 +178,18 @@ const Article = () => {
       </Card>
       <Card>
         <div>共计{total}篇文章</div>
-        <Table columns={columns} dataSource={list} rowKey="id" />
+        <Table
+          columns={columns}
+          dataSource={list}
+          rowKey="id"
+          pagination={{
+            position: ['bottomLeft'],
+            current: page,
+            pageSize,
+            total,
+            onChange: pageChange,
+          }}
+        />
       </Card>
     </>
   )
