@@ -16,10 +16,11 @@ import styles from './index.module.scss'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import Channel from '@/components/channel'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { addArticleAction } from '@/store/actions/article'
 import { useHistory, useParams } from 'react-router-dom'
+import request from '@/utils/request'
 const Publish = () => {
   const [fileList, setFileList] = useState([])
   const [maxCount, setMaxCount] = useState(1)
@@ -90,6 +91,29 @@ const Publish = () => {
       console.log(error)
     }
   }
+  useEffect(() => {
+    const loadData = async () => {
+      if (!isEdit) return
+      try {
+        const { data } = await request.get(`/mp/articles/${params.id}`)
+        const {
+          title,
+          channel_id,
+          content,
+          cover: { type, images },
+        } = data
+        const formData = { title, channel_id, content, type }
+        form.setFieldsValue(formData)
+        const imgFile = images.map((item) => ({ url: item }))
+        setFileList(imgFile)
+        fileListRef.current = imgFile
+        setMaxCount(type)
+      } catch (error) {
+        console.dir(error)
+      }
+    }
+    loadData()
+  }, [isEdit, params, form])
   return (
     <div className={styles.root}>
       <Card
