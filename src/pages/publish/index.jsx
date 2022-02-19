@@ -70,9 +70,13 @@ const Publish = () => {
         images: fileList.map((item) => item.url),
       },
     }
+    if (isEdit) {
+      data.id = params.id
+    }
     try {
-      await dispatch(addArticleAction(data, draft))
-      message.success(!draft ? '发布成功' : '存为草稿成功')
+      await dispatch(addArticleAction(data, draft, isEdit))
+      const test = isEdit ? '编辑成功' : '发布成功'
+      message.success(!draft ? test : '存为草稿成功')
       history.push('/home/article')
     } catch (error) {
       console.log(error)

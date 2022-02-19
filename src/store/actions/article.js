@@ -30,9 +30,14 @@ export const delArticleAction = (id, params) => {
   }
 }
 
-export const addArticleAction = (data, draft) => {
+export const addArticleAction = (data, draft, isEdit) => {
   return async (dispatch, getState) => {
-    await request.post(`/mp/articles?draft=${draft}`, data)
+    if (isEdit) {
+      await request.put(`/mp/articles/${data.id}?draft=${draft}`, data)
+    } else {
+      await request.post(`/mp/articles?draft=${draft}`, data)
+    }
+
     // dispatch({ type: , payload})
   }
 }
