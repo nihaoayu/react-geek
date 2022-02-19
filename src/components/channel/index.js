@@ -1,8 +1,15 @@
+import { getChannelAction } from "@/store/actions/article"
 import { Select } from "antd"
-import { useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 const { Option } = Select
 function Channel ({ value, onChange }) {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    // 获取频道列表
+    dispatch(getChannelAction())
+  }, [dispatch])
   const { channel } = useSelector(
     (state) => state.article
   )

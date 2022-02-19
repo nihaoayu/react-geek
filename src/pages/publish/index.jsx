@@ -15,7 +15,24 @@ import styles from './index.module.scss'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import Channel from '@/components/channel'
+import { useState } from 'react'
 const Publish = () => {
+  const [fileList, setFileList] = useState([])
+  // 上传文件的回调
+  const onUploadChange = (info) => {
+    // info.fileList 用来获取当前的文件列表
+    const _fileList = info.fileList.map((file) => {
+      // 刚从本地上传的图片
+      if (file.response) {
+        return {
+          url: file.response.data.url,
+        }
+      }
+      // 已有图片
+      return file
+    })
+    setFileList(_fileList)
+  }
   return (
     <div className={styles.root}>
       <Card
@@ -53,11 +70,25 @@ const Publish = () => {
                 {/* <Radio value={-1}>自动</Radio> */}
               </Radio.Group>
             </Form.Item>
+            {/* // Upload 组件说明： */}
             <Upload
-              name="image"
-              listType="picture-card"
               className="avatar-uploader"
-              showUploadList>
+              // 发到后台的文件参数名
+              // 必须指定，根据接口文档的说明，需要设置为 image
+              name="image"
+              // 上传组件展示方式
+              listType="picture-card"
+              // 展示已上传图片列表
+              showUploadList
+              // 接口地址
+              // 注意：Upload 再上传图片时，默认不会执行 axios 的请求，所以，此处需要手动设置完整接口地址
+              action="http://geek.itheima.net/v1_0/upload"
+              // 多选
+              multiple
+              // 已经上传的文件列表，设置该属性后组件变为 受控
+              fileList={fileList}
+              // 上传文件改变时的回调
+              onChange={onUploadChange}>
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
               </div>

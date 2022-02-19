@@ -18,11 +18,7 @@ import {
 } from '@ant-design/icons'
 import img404 from '@/assets/error.png'
 import { useEffect, useRef } from 'react'
-import {
-  getChannelAction,
-  getArticleAction,
-  delArticleAction,
-} from '@/store/actions/article'
+import { getArticleAction, delArticleAction } from '@/store/actions/article'
 import { useDispatch, useSelector } from 'react-redux'
 import Channel from '@/components/channel'
 
@@ -39,7 +35,7 @@ const Article = () => {
   const history = useHistory()
   useEffect(() => {
     // 获取频道列表
-    dispatch(getChannelAction())
+    // dispatch(getChannelAction())
     // 获取table表格
     dispatch(getArticleAction({}))
   }, [dispatch])
