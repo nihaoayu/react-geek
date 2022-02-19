@@ -44,7 +44,8 @@ function Layouts () {
           <Menu
             mode="inline"
             theme="dark"
-            defaultSelectedKeys={[selectedKey]}
+            // defaultSelectedKeys={[selectedKey]}
+            selectedKeys={[selectedKey]}
             style={{ height: '100%', borderRight: 0 }}
           >
             <Menu.Item icon={<HomeOutlined />} key="/home">
