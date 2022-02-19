@@ -15,10 +15,11 @@ import styles from './index.module.scss'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import Channel from '@/components/channel'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 const Publish = () => {
   const [fileList, setFileList] = useState([])
   const [maxCount, setMaxCount] = useState(1)
+  const fileListRef = useRef([])
   // 上传文件的回调
   const onUploadChange = (info) => {
     // info.fileList 用来获取当前的文件列表
@@ -32,12 +33,19 @@ const Publish = () => {
       // 已有图片
       return file
     })
+    fileListRef.current = _fileList
     setFileList(_fileList)
   }
   // 封面个数
   const changeType = (e) => {
     const count = e.target.value
     setMaxCount(count)
+    if (count === 1) {
+      const firstImg = fileListRef.current[0]
+      setFileList(!firstImg ? [] : [firstImg])
+    } else if (count === 3) {
+      setFileList(fileListRef.current)
+    }
   }
   return (
     <div className={styles.root}>
