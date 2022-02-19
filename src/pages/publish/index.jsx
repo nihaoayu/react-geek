@@ -7,6 +7,7 @@ import {
   Input,
   Upload,
   Space,
+  message,
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -47,6 +48,22 @@ const Publish = () => {
       setFileList(fileListRef.current)
     }
   }
+  // 发布功能
+  const onFinsh = (formData) => {
+    const { type, ...rest } = formData
+    if (fileList.length !== type) {
+      return message.error('发布的封面和选择的封面个数不一致')
+    }
+    const data = {
+      ...rest,
+      cover: {
+        type,
+        images: fileList.map((item) => item.url),
+      },
+    }
+    console.log(fileList)
+    console.log('处理完', data)
+  }
   return (
     <div className={styles.root}>
       <Card
@@ -59,6 +76,7 @@ const Publish = () => {
           </Breadcrumb>
         }>
         <Form
+          onFinish={onFinsh}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ type: 1, content: '' }}>
