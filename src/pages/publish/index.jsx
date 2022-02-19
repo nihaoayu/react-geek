@@ -19,7 +19,7 @@ import Channel from '@/components/channel'
 import { useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { addArticleAction } from '@/store/actions/article'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 const Publish = () => {
   const [fileList, setFileList] = useState([])
   const [maxCount, setMaxCount] = useState(1)
@@ -27,6 +27,8 @@ const Publish = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const [form] = Form.useForm()
+  const params = useParams()
+  const isEdit = !!params.id
   // 上传文件的回调
   const onUploadChange = (info) => {
     // info.fileList 用来获取当前的文件列表
@@ -96,7 +98,9 @@ const Publish = () => {
             <Breadcrumb.Item>
               <Link to="/home">首页</Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>发布文章</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              {!isEdit ? '发布文章' : '编辑文章'}
+            </Breadcrumb.Item>
           </Breadcrumb>
         }>
         <Form
@@ -164,7 +168,7 @@ const Publish = () => {
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
               <Button size="large" type="primary" htmlType="submit">
-                发布文章
+                {!isEdit ? '发布文章' : '编辑文章'}
               </Button>
               <Button size="large" onClick={serveDraft}>
                 存入草稿
