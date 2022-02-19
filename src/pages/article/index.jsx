@@ -6,7 +6,6 @@ import {
   Button,
   Radio,
   DatePicker,
-  Select,
   Table,
   Tag,
   Space,
@@ -25,8 +24,8 @@ import {
   delArticleAction,
 } from '@/store/actions/article'
 import { useDispatch, useSelector } from 'react-redux'
+import Channel from '@/components/channel'
 
-const { Option } = Select
 const { RangePicker } = DatePicker
 // 优化文章状态的处理
 const articleStatus = {
@@ -45,9 +44,7 @@ const Article = () => {
     dispatch(getArticleAction({}))
   }, [dispatch])
   // 频道列表
-  const { channel, list, total, page, pageSize } = useSelector(
-    (state) => state.article
-  )
+  const { list, total, page, pageSize } = useSelector((state) => state.article)
   // 筛选
   const paramsFilter = useRef()
   const onFilter = ({ channel_id, date, status }) => {
@@ -178,18 +175,8 @@ const Article = () => {
           </Form.Item>
 
           <Form.Item label="频道" name="channel_id">
-            <Select
-              placeholder="请选择文章频道"
-              // defaultValue="lucy"
-              style={{ width: 120 }}>
-              {/* <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option> */}
-              {channel.map((item) => (
-                <Option value={item.id} key={item.id}>
-                  {item.name}
-                </Option>
-              ))}
-            </Select>
+            {/* 频道列表 */}
+            <Channel />
           </Form.Item>
 
           <Form.Item label="日期" name="date">

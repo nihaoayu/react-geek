@@ -7,7 +7,6 @@ import {
   Input,
   Upload,
   Space,
-  Select,
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -15,9 +14,7 @@ import styles from './index.module.scss'
 // 导入富文本编辑器和样式
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-
-const { Option } = Select
-
+import Channel from '@/components/channel'
 const Publish = () => {
   return (
     <div className={styles.root}>
@@ -44,9 +41,7 @@ const Publish = () => {
             label="频道"
             name="channel_id"
             rules={[{ required: true, message: '请选择文章频道' }]}>
-            <Select placeholder="请选择文章频道" style={{ width: 400 }}>
-              <Option value={0}>推荐</Option>
-            </Select>
+            <Channel />
           </Form.Item>
 
           <Form.Item label="封面">
