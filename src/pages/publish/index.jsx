@@ -17,10 +17,15 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import Channel from '@/components/channel'
 import { useState, useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { addArticleAction } from '@/store/actions/article'
+import { useHistory } from 'react-router-dom'
 const Publish = () => {
   const [fileList, setFileList] = useState([])
   const [maxCount, setMaxCount] = useState(1)
   const fileListRef = useRef([])
+  const dispatch = useDispatch()
+  const history = useHistory()
   // 上传文件的回调
   const onUploadChange = (info) => {
     // info.fileList 用来获取当前的文件列表
@@ -49,7 +54,7 @@ const Publish = () => {
     }
   }
   // 发布功能
-  const onFinsh = (formData) => {
+  const onFinsh = async (formData) => {
     const { type, ...rest } = formData
     if (fileList.length !== type) {
       return message.error('发布的封面和选择的封面个数不一致')
@@ -61,8 +66,13 @@ const Publish = () => {
         images: fileList.map((item) => item.url),
       },
     }
-    console.log(fileList)
-    console.log('处理完', data)
+    try {
+      await dispatch(addArticleAction(data))
+      message.success('发布成功')
+      history.push('/home/article')
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <div className={styles.root}>
