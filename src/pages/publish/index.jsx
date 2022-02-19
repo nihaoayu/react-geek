@@ -26,6 +26,7 @@ const Publish = () => {
   const fileListRef = useRef([])
   const dispatch = useDispatch()
   const history = useHistory()
+  const [form] = Form.useForm()
   // 上传文件的回调
   const onUploadChange = (info) => {
     // info.fileList 用来获取当前的文件列表
@@ -53,8 +54,8 @@ const Publish = () => {
       setFileList(fileListRef.current)
     }
   }
-  // 发布功能
-  const onFinsh = async (formData) => {
+  // 封装发布和存为草稿个公共方法
+  const publishArticle = async (formData, draft) => {
     const { type, ...rest } = formData
     if (fileList.length !== type) {
       return message.error('发布的封面和选择的封面个数不一致')
@@ -67,9 +68,22 @@ const Publish = () => {
       },
     }
     try {
-      await dispatch(addArticleAction(data))
-      message.success('发布成功')
+      await dispatch(addArticleAction(data, draft))
+      message.success(!draft ? '发布成功' : '存为草稿成功')
       history.push('/home/article')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // 发布功能
+  const onFinsh = async (formData) => {
+    publishArticle(formData, false)
+  }
+  // 存为草稿
+  const serveDraft = async () => {
+    try {
+      const values = await form.validateFields()
+      publishArticle(values, true)
     } catch (error) {
       console.log(error)
     }
@@ -86,6 +100,7 @@ const Publish = () => {
           </Breadcrumb>
         }>
         <Form
+          form={form}
           onFinish={onFinsh}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
@@ -151,7 +166,9 @@ const Publish = () => {
               <Button size="large" type="primary" htmlType="submit">
                 发布文章
               </Button>
-              <Button size="large">存入草稿</Button>
+              <Button size="large" onClick={serveDraft}>
+                存入草稿
+              </Button>
             </Space>
           </Form.Item>
         </Form>
