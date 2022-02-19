@@ -18,6 +18,7 @@ import Channel from '@/components/channel'
 import { useState } from 'react'
 const Publish = () => {
   const [fileList, setFileList] = useState([])
+  const [maxCount, setMaxCount] = useState(1)
   // 上传文件的回调
   const onUploadChange = (info) => {
     // info.fileList 用来获取当前的文件列表
@@ -32,6 +33,11 @@ const Publish = () => {
       return file
     })
     setFileList(_fileList)
+  }
+  // 封面个数
+  const changeType = (e) => {
+    const count = e.target.value
+    setMaxCount(count)
   }
   return (
     <div className={styles.root}>
@@ -63,7 +69,7 @@ const Publish = () => {
 
           <Form.Item label="封面">
             <Form.Item name="type">
-              <Radio.Group>
+              <Radio.Group onChange={changeType}>
                 <Radio value={1}>单图</Radio>
                 <Radio value={3}>三图</Radio>
                 <Radio value={0}>无图</Radio>
@@ -71,28 +77,31 @@ const Publish = () => {
               </Radio.Group>
             </Form.Item>
             {/* // Upload 组件说明： */}
-            <Upload
-              className="avatar-uploader"
-              // 发到后台的文件参数名
-              // 必须指定，根据接口文档的说明，需要设置为 image
-              name="image"
-              // 上传组件展示方式
-              listType="picture-card"
-              // 展示已上传图片列表
-              showUploadList
-              // 接口地址
-              // 注意：Upload 再上传图片时，默认不会执行 axios 的请求，所以，此处需要手动设置完整接口地址
-              action="http://geek.itheima.net/v1_0/upload"
-              // 多选
-              multiple
-              // 已经上传的文件列表，设置该属性后组件变为 受控
-              fileList={fileList}
-              // 上传文件改变时的回调
-              onChange={onUploadChange}>
-              <div style={{ marginTop: 8 }}>
-                <PlusOutlined />
-              </div>
-            </Upload>
+            {maxCount > 0 && (
+              <Upload
+                maxCount={maxCount}
+                className="avatar-uploader"
+                // 发到后台的文件参数名
+                // 必须指定，根据接口文档的说明，需要设置为 image
+                name="image"
+                // 上传组件展示方式
+                listType="picture-card"
+                // 展示已上传图片列表
+                showUploadList
+                // 接口地址
+                // 注意：Upload 再上传图片时，默认不会执行 axios 的请求，所以，此处需要手动设置完整接口地址
+                action="http://geek.itheima.net/v1_0/upload"
+                // 多选
+                multiple={maxCount > 1}
+                // 已经上传的文件列表，设置该属性后组件变为 受控
+                fileList={fileList}
+                // 上传文件改变时的回调
+                onChange={onUploadChange}>
+                <div style={{ marginTop: 8 }}>
+                  <PlusOutlined />
+                </div>
+              </Upload>
+            )}
           </Form.Item>
           <Form.Item
             label="内容"
