@@ -12,6 +12,9 @@ import {
 import { PlusOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import styles from './index.module.scss'
+// 导入富文本编辑器和样式
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 const { Option } = Select
 
@@ -30,7 +33,7 @@ const Publish = () => {
         <Form
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ type: 1 }}>
+          initialValues={{ type: 1, content: '' }}>
           <Form.Item
             label="标题"
             name="title"
@@ -68,7 +71,9 @@ const Publish = () => {
           <Form.Item
             label="内容"
             name="content"
-            rules={[{ required: true, message: '请输入文章内容' }]}></Form.Item>
+            rules={[{ required: true, message: '请输入文章内容' }]}>
+            <ReactQuill />
+          </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
